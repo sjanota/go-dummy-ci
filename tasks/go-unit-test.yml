@@ -9,8 +9,7 @@ image_resource:
 
 inputs:
 - name: src
+- name: ci-src
 
 run:
-  path: go
-  args: [ test ]
-  dir: src
+  path: ci-src/tasks/go-unit-test.sh

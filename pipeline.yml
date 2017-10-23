@@ -20,3 +20,5 @@ jobs:
     file: ci-src/tasks/go-unit-test.yml
     input_mapping:
       src: server-src
+    params:
+      NAME: dummy-server
