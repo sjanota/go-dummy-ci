@@ -18,11 +18,18 @@ resources:
     pre_release: true
     release: false
 
+- name: server-release
+  type: github-release
+  source:
+    owner: sjanota
+    repository: go-dummy-server
+    access_token: ((github-pass))
+
 - name: server-version
   type: semver
   source:
     driver: git
-    branch: master
+    branch: version
     file: version
     uri: https://github.com/sjanota/go-dummy-server.git
     username: ((github-user))
@@ -42,11 +49,18 @@ resources:
     pre_release: true
     release: false
 
+- name: client-release
+  type: github-release
+  source:
+    owner: sjanota
+    repository: go-dummy-client
+    access_token: ((github-pass))
+
 - name: client-version
   type: semver
   source:
     driver: git
-    branch: master
+    branch: version
     file: version
     uri: https://github.com/sjanota/go-dummy-client.git
     username: ((github-user))
@@ -55,7 +69,7 @@ resources:
 - name: integration-src
   type: git
   source:
-    uri: https://github.com/sjanota/go-dummy-server.git
+    uri: https://github.com/sjanota/go-dummy-integration.git
 
 jobs:
 - name: publish-server
@@ -117,7 +131,44 @@ jobs:
     - get: ci-src
     - get: server-pre-release
       passed: [publish-server]
+      trigger: true
     - get: client-pre-release
       passed: [publish-client]
+      trigger: true
   - task: integration-test
     file: ci-src/tasks/integration-tests.yml
+  - aggregate:
+    - task: prepare-server-release-notes
+      file: ci-src/tasks/prepare-release-notes.yml
+      input_mapping:
+        version: server-version
+      output_mapping:
+        release-notes: server-release-notes
+    - task: prepare-client-release-notes
+      file: ci-src/tasks/prepare-release-notes.yml
+      input_mapping:
+        version: client-version
+      output_mapping:
+        release-notes: client-release-notes
+  - aggregate:
+    - put: server-release
+      params:
+        name: server-release-notes/name
+        tag: server-release-notes/tag
+        body: server-release-notes/body
+        globs:
+        - server-pre-release/go-dummy-server
+    - put: client-release
+      params:
+        name: client-release-notes/name
+        tag: client-release-notes/tag
+        body: client-release-notes/body
+        globs:
+        - client-pre-release/go-dummy-client
+  - aggregate:
+    - put: server-version
+      params:
+        bump: minor
+    - put: client-version
+      params:
+        bump: minor
