@@ -127,6 +127,14 @@ jobs:
 - name: integration
   plan:
   - aggregate:
+    - get: server-version
+      passed: [publish-server]
+      params:
+        bump: minor
+    - get: client-version
+      passed: [publish-client]
+      params:
+        bump: minor
     - get: integration-src
     - get: ci-src
     - get: server-pre-release
@@ -168,7 +176,7 @@ jobs:
   - aggregate:
     - put: server-version
       params:
-        bump: minor
+        file: server-version/version
     - put: client-version
       params:
-        bump: minor
+        file: client-version/version

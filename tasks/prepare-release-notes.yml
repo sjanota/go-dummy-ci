@@ -8,7 +8,6 @@ image_resource:
 
 inputs:
 - name: ci-src
-- name: src
 - name: version
 
 outputs:
