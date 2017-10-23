@@ -1,0 +1,13 @@
+---
+platform: linux
+
+inputs:
+- name: ci-src
+- name: src
+- name: version
+
+outputs:
+- name: release-notes
+
+run:
+  path: ci-src/tasks/prepare-release-notes.sh

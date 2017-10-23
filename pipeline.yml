@@ -9,16 +9,43 @@ resources:
   source:
     uri: https://github.com/sjanota/go-dummy-ci.git
 
+- name: server-pre-release
+  type: github-release
+  source:
+    owner: sjanota
+    repository: go-dummy-server
+    access_token: ((github-pass))
+    pre_release: true
+    release: false
+
+- name: server-version
+  type: semver
+  source:
+    driver: git
+    uri: https://github.com/sjanota/go-dummy-server.git
+    username: ((github-user))
+    password: ((github-pass))
+
 jobs:
 - name: publish-server
   plan:
   - aggregate:
-    - get: server-src
+    - get: src
+      resource: server-src
       trigger: true
     - get: ci-src
+    - get: version
+      resource: server-version
   - task: unit-test
     file: ci-src/tasks/go-unit-test.yml
-    input_mapping:
-      src: server-src
+  - task: build
+    file: ci-src/tasks/go-unit-test.yml
+  - task: prepare-release-notes
+    file: ci-src/tasks/prepare-release-notes.yml
+  - put: server-pre-release
     params:
-      NAME: dummy-server
+      name: release-notes/name
+      tag: release-notes/tag
+      body: release-note/body
+      globs:
+      - build/*
