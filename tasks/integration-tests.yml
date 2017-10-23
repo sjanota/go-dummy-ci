@@ -7,6 +7,7 @@ image_resource:
     repository: ubuntu
 
 inputs:
+- name: ci-src
 - name: server-pre-release
 - name: client-pre-release
 
