@@ -116,8 +116,8 @@ jobs:
     - get: integration-src
     - get: ci-src
     - get: server-pre-release
-      passed: publish-server
+      passed: [publish-server]
     - get: client-pre-release
-      passed: publish-client
+      passed: [publish-client]
   - task: integration-test
     file: ci-src/tasks/integration-tests.yml
