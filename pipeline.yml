@@ -38,6 +38,8 @@ jobs:
     - get: ci-src
     - get: version
       resource: server-version
+      params:
+        bump: patch
   - task: release
     file: ci-src/tasks/go-release.yml
   - task: prepare-release-notes
@@ -48,4 +50,7 @@ jobs:
       tag: release-notes/tag
       body: release-notes/body
       globs:
-      - build/*
+      - release/*
+  - put: server-version
+    params:
+      file: version/version
