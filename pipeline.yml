@@ -46,6 +46,6 @@ jobs:
     params:
       name: release-notes/name
       tag: release-notes/tag
-      body: release-note/body
+      body: release-notes/body
       globs:
       - build/*

@@ -8,3 +8,4 @@ pushd release-notes >/dev/null
   echo $VERSION > tag
   echo "Release $VERSION" > name
   echo "Release $VERSION" > body
+popd >/dev/null
