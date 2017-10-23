@@ -8,6 +8,7 @@ image_resource:
 
 inputs:
 - name: ci-src
+- name: integration-src
 - name: server-pre-release
 - name: client-pre-release
 
