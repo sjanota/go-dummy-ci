@@ -52,6 +52,11 @@ resources:
     username: ((github-user))
     password: ((github-pass))
 
+- name: integration-src
+  type: git
+  source:
+    uri: https://github.com/sjanota/go-dummy-server.git
+
 jobs:
 - name: publish-server
   plan:
@@ -104,3 +109,15 @@ jobs:
   - put: client-version
     params:
       file: version/version
+
+- name: integration
+  plan:
+  - aggregate:
+    - get: integration-src
+    - get: ci-src
+    - get: server-pre-release
+      passed: publish-server
+    - get: client-pre-release
+      passed: publish-client
+  - task: integration-test
+    file: ci-src/tasks/integration-tests.yml

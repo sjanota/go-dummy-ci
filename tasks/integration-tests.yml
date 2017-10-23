@@ -1,0 +1,14 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: ubuntu
+
+inputs:
+- name: server-pre-release
+- name: client-pre-release
+
+run:
+  path: ci-src/tasks/integration-tests.sh
