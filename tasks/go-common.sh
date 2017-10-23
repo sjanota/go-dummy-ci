@@ -6,13 +6,13 @@ function setup() {
   SRC_DIR=$1
 
   ## Lets make name of the project repo name
-  pushd src
+  pushd src >/dev/null
     NAME=$(git remote show origin -n | grep Fetch | awk '{print $NF}' |  awk -F/ '{print $NF}' | sed 's/.git//')
-  popd
+  popd >/dev/null
 
   ## Go sources needs to be under GOPATH which is by default ~/go
   mkdir -p ~/go/src
-  ln -s `pwd`/src ~/go/src/$NAME
+  ln -s `pwd`/src ~/go/src/$NAME >/dev/null
 
   echo ~/go/src/$NAME
 }
