@@ -1,0 +1,22 @@
+resources:
+- name: server-src
+  type: git
+  source:
+    uri: https://github.com/sjanota/go-dummy-server.git
+
+- name: ci-src
+  type: git
+  source:
+    uri: https://github.com/sjanota/go-dummy-ci.git
+
+jobs:
+- name: publish-server
+  plan:
+  - aggregate:
+    - get: server-src
+      trigger: true
+    - get: ci-src
+  - task: unit-test
+    file: ci-src/tasks/go-unit-test.yml
+    input_mapping:
+      src: server-src
