@@ -38,10 +38,8 @@ jobs:
     - get: ci-src
     - get: version
       resource: server-version
-  - task: unit-test
-    file: ci-src/tasks/go-unit-test.yml
-  - task: build
-    file: ci-src/tasks/go-build.yml
+  - task: release
+    file: ci-src/tasks/go-release.yml
   - task: prepare-release-notes
     file: ci-src/tasks/prepare-release-notes.yml
   - put: server-pre-release

@@ -7,8 +7,9 @@ set -ex
 WD=$(setup src)
 
 pushd $WD >/dev/null
+  go test
   go build
 popd >/dev/null
 
 PRJ_NAME=$(basename $WD)
-mv $WD/$PRJ_NAME build
+mv $WD/$PRJ_NAME release/

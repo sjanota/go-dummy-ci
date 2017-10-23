@@ -11,5 +11,8 @@ inputs:
 - name: src
 - name: ci-src
 
+outputs:
+- name: release
+
 run:
-  path: ci-src/tasks/go-unit-test.sh
+  path: ci-src/tasks/go-build.sh
