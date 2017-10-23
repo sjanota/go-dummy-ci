@@ -11,8 +11,8 @@ function setup() {
   popd >/dev/null
 
   ## Go sources needs to be under GOPATH
-  mkdir -p ~/go/src
   PRJ_PATH=/usr/local/go/src/$NAME
+  mkdir -p $(dirname $PRJ_PATH)
   ln -s `pwd`/src $PRJ_PATH >/dev/null
 
   echo $PRJ_PATH
