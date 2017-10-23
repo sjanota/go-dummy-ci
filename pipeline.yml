@@ -1,13 +1,13 @@
 resources:
-- name: server-src
-  type: git
-  source:
-    uri: https://github.com/sjanota/go-dummy-server.git
-
 - name: ci-src
   type: git
   source:
     uri: https://github.com/sjanota/go-dummy-ci.git
+
+- name: server-src
+  type: git
+  source:
+    uri: https://github.com/sjanota/go-dummy-server.git
 
 - name: server-pre-release
   type: github-release
@@ -25,6 +25,30 @@ resources:
     branch: master
     file: version
     uri: https://github.com/sjanota/go-dummy-server.git
+    username: ((github-user))
+    password: ((github-pass))
+
+- name: client-src
+  type: git
+  source:
+    uri: https://github.com/sjanota/go-dummy-client.git
+
+- name: client-pre-release
+  type: github-release
+  source:
+    owner: sjanota
+    repository: go-dummy-client
+    access_token: ((github-pass))
+    pre_release: true
+    release: false
+
+- name: client-version
+  type: semver
+  source:
+    driver: git
+    branch: master
+    file: version
+    uri: https://github.com/sjanota/go-dummy-client.git
     username: ((github-user))
     password: ((github-pass))
 
@@ -52,5 +76,31 @@ jobs:
       globs:
       - release/*
   - put: server-version
+    params:
+      file: version/version
+
+- name: publish-client
+  plan:
+  - aggregate:
+    - get: src
+      resource: client-src
+      trigger: true
+    - get: ci-src
+    - get: version
+      resource: client-version
+      params:
+        bump: patch
+  - task: release
+    file: ci-src/tasks/go-release.yml
+  - task: prepare-release-notes
+    file: ci-src/tasks/prepare-release-notes.yml
+  - put: client-pre-release
+    params:
+      name: release-notes/name
+      tag: release-notes/tag
+      body: release-notes/body
+      globs:
+      - release/*
+  - put: client-version
     params:
       file: version/version
