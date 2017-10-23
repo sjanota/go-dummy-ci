@@ -11,4 +11,4 @@ pushd $WD >/dev/null
 popd >/dev/null
 
 PRJ_NAME=$(basename $WD)
-mv $WD/$PRJ_NAME out
+mv $WD/$PRJ_NAME build
