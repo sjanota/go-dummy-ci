@@ -6,6 +6,6 @@ set -ex
 
 WD=$(setup src)
 
-pushd $WD
+pushd $WD >/dev/null
   go test
-popd
+popd >/dev/null
