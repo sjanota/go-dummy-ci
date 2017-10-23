@@ -15,4 +15,4 @@ outputs:
 - name: release
 
 run:
-  path: ci-src/tasks/go-build.sh
+  path: ci-src/tasks/go-release.sh
