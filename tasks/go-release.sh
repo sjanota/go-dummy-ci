@@ -7,7 +7,7 @@ set -ex
 WD=$(setup src)
 
 pushd $WD >/dev/null
-  go test
+  # go test
   go build
 popd >/dev/null
 
